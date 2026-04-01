@@ -4,6 +4,7 @@
 
 import { createElement } from '../utils/helpers.js';
 import { Header } from './Header.js';
+import { Footer } from './Footer.js';
 import { Landing } from './Landing.js';
 import { VideoPlayer } from '../player/VideoPlayer.js';
 import { addToHistory } from '../utils/storage.js';
@@ -15,6 +16,7 @@ export class App {
     this._currentView = null; // 'landing' | 'player'
     this._landing = null;
     this._player = null;
+    this._footer = null;
 
     this._init();
   }
@@ -30,6 +32,10 @@ export class App {
       id: 'aura-content',
     });
     this._root.appendChild(this._contentEl);
+
+    // Footer
+    this._footer = new Footer();
+    this._root.appendChild(this._footer.element);
 
     // Show landing by default
     this._showLanding();

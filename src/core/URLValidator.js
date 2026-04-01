@@ -2,7 +2,7 @@
 // AuraStream — URL Validator
 // ============================================
 
-import { MAX_URL_LENGTH } from '../utils/constants.js';
+import { MAX_URL_LENGTH, PROXY_BASE } from '../utils/constants.js';
 
 // Private/reserved IP ranges to block
 const PRIVATE_IP_PATTERNS = [
@@ -88,7 +88,7 @@ export function isLikelyVideoUrl(url) {
  */
 export async function probeUrl(url) {
   try {
-    const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+    const proxyUrl = `${PROXY_BASE}?url=${encodeURIComponent(url)}`;
     const response = await fetch(proxyUrl, {
       method: 'HEAD',
       signal: AbortSignal.timeout(15000),

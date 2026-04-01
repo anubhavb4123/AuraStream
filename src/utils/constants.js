@@ -31,7 +31,7 @@ export const HISTORY_MAX_ITEMS = 10;
 export const MAX_URL_LENGTH = 2048;
 
 // Proxy
-export const PROXY_BASE = '/api/proxy';
+export const PROXY_BASE = import.meta.env.VITE_PROXY_URL || '/api/proxy';
 
 // MIME types
 export const SUPPORTED_VIDEO_TYPES = [

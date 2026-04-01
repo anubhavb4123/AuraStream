@@ -9,7 +9,8 @@ import http from 'http';
 import https from 'https';
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+const FRONTEND_URL = process.env.FRONTEND_URL || '*';
 
 // --- Security: Rate Limiting ---
 const limiter = rateLimit({
@@ -24,7 +25,7 @@ app.use(limiter);
 
 // --- CORS ---
 app.use(cors({
-  origin: true,
+  origin: FRONTEND_URL === '*' ? true : FRONTEND_URL,
   methods: ['GET', 'HEAD', 'OPTIONS'],
   exposedHeaders: ['Content-Length', 'Content-Range', 'Accept-Ranges', 'Content-Type'],
 }));
@@ -56,6 +57,16 @@ function isUrlAllowed(urlString) {
     if (urlString.length > 4096) {
       return { allowed: false, reason: 'URL is too long' };
     }
+    
+    // Basic validation to prevent open-proxy abuse targeting web pages
+    const blockedExtensions = ['.html', '.htm', '.php', '.js', '.css', '.asp', '.jsp'];
+    const path = url.pathname.toLowerCase();
+    for (const ext of blockedExtensions) {
+      if (path.endsWith(ext)) {
+        return { allowed: false, reason: 'Only media files are allowed, not web pages or scripts.' };
+      }
+    }
+
     return { allowed: true };
   } catch {
     return { allowed: false, reason: 'Invalid URL format' };
