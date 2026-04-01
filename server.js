@@ -27,7 +27,9 @@ app.use(limiter);
 app.use(cors({
   origin: FRONTEND_URL === '*' ? true : FRONTEND_URL,
   methods: ['GET', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Range', 'Accept', 'Origin', 'X-Requested-With'],
   exposedHeaders: ['Content-Length', 'Content-Range', 'Accept-Ranges', 'Content-Type'],
+  credentials: true,
 }));
 
 // --- URL Validation ---
@@ -143,18 +145,16 @@ app.all('/api/proxy', async (req, res) => {
   }
 
   try {
-    // Build headers to forward
-    const forwardHeaders = {};
-
-    if (req.headers.range) {
-      forwardHeaders['Range'] = req.headers.range;
-    }
-    if (req.headers.accept) {
-      forwardHeaders['Accept'] = req.headers.accept;
-    }
-    if (req.headers['if-range']) {
-      forwardHeaders['If-Range'] = req.headers['if-range'];
-    }
+    const forwardHeaders = { ...req.headers };
+    
+    // Remove headers that should not be proxied downstream
+    const headersToRemove = [
+      'host', 'connection', 'x-forwarded-for', 'x-forwarded-proto',
+      'x-forwarded-host', 'x-forwarded-port', 'x-real-ip',
+      'cf-connecting-ip', 'cf-ray', 'cf-visitor', 'true-client-ip',
+      'forwarded', 'via'
+    ];
+    headersToRemove.forEach(h => delete forwardHeaders[h]);
 
     const method = req.method === 'HEAD' ? 'HEAD' : 'GET';
 
@@ -169,6 +169,7 @@ app.all('/api/proxy', async (req, res) => {
     const headersToForward = [
       'content-type', 'content-length', 'content-range',
       'accept-ranges', 'cache-control', 'etag', 'last-modified',
+      'access-control-allow-origin'
     ];
 
     for (const header of headersToForward) {
@@ -176,6 +177,9 @@ app.all('/api/proxy', async (req, res) => {
         res.set(header, upstream.headers[header]);
       }
     }
+
+    // Explicitly set Accept-Ranges so the browser knows it can seek
+    res.set('Accept-Ranges', 'bytes');
 
     // For HEAD requests, just send headers
     if (method === 'HEAD') {
