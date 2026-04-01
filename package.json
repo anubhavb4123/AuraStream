@@ -1,0 +1,22 @@
+{
+  "name": "aurastream",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Modern web-based video streaming platform with chunk-based progressive playback",
+  "scripts": {
+    "dev": "concurrently -n \"vite,proxy\" -c \"cyan,magenta\" \"vite\" \"node server.js\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^7.4.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0",
+    "concurrently": "^9.0.0"
+  }
+}
