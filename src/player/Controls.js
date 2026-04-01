@@ -165,6 +165,12 @@ export class Controls {
       children: [this._seekBar.element, controlsRow],
     });
 
+    // Prevent clicks on controls from bubbling to the video container
+    // (which toggles play/pause on click)
+    container.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
     return container;
   }
 
