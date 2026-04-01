@@ -50,11 +50,6 @@ export class Controls {
     this._restorePreferences();
   }
 
-  set onSeek(fn) {
-    this._onSeek = fn;
-    if (this._seekBar) this._seekBar.onSeek = fn;
-  }
-
   _create() {
     // Seek bar
     this._seekBar = new SeekBar(this._video);
