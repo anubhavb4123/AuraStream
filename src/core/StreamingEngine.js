@@ -47,6 +47,7 @@ export class StreamingEngine extends EventEmitter {
     this._fetchController = null;
     this._appendQueue = [];
     this._isAppending = false;
+    this._onSeeking = null;
 
     // Sub-modules
     this.network = new NetworkMonitor();
@@ -158,6 +159,12 @@ export class StreamingEngine extends EventEmitter {
       this.buffer.on('buffer-health', (data) => this.emit('buffer-health', data));
       this.buffer.on('buffer-evicted', (data) => this.emit('buffer-evicted', data));
 
+      // Listen for all seek operations (seek bar, buttons, hotkeys)
+      this._onSeeking = () => {
+        this.handleSeek(this._video.currentTime);
+      };
+      this._video.addEventListener('seeking', this._onSeeking);
+
       // Start fetching chunks
       this._currentOffset = 0;
       this.emit('state', 'buffering');
@@ -231,6 +238,11 @@ export class StreamingEngine extends EventEmitter {
    */
   _fallbackToNative() {
     // Cleanup MSE
+    if (this._onSeeking) {
+      this._video.removeEventListener('seeking', this._onSeeking);
+      this._onSeeking = null;
+    }
+
     if (this._mediaSource) {
       try {
         if (this._mediaSource.readyState === 'open') {
@@ -519,6 +531,11 @@ export class StreamingEngine extends EventEmitter {
   destroy() {
     this._isDestroyed = true;
     this._abortCurrentFetch();
+
+    if (this._onSeeking) {
+      this._video.removeEventListener('seeking', this._onSeeking);
+      this._onSeeking = null;
+    }
 
     if (this._bufferCheckInterval) {
       clearInterval(this._bufferCheckInterval);
