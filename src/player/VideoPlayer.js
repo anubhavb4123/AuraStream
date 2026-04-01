@@ -112,9 +112,6 @@ export class VideoPlayer {
     });
 
     this._controls = new Controls(this._video, wrapper);
-    this._controls.onSeek = (time) => {
-      if (this._engine) this._engine.handleSeek(time);
-    };
 
     videoContainer.appendChild(this._controls.element);
     wrapper.appendChild(videoContainer);
