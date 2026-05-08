@@ -1,6 +1,4 @@
-// ============================================
 // AuraStream — Header Component
-// ============================================
 
 import { createElement } from '../utils/helpers.js';
 import { APP_NAME } from '../utils/constants.js';
