@@ -1,6 +1,4 @@
-// ============================================
 // AuraStream — Toast Notification System
-// ============================================
 
 import { createElement, uid } from '../utils/helpers.js';
 import { TOAST_DURATION } from '../utils/constants.js';
