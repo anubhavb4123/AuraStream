@@ -1,6 +1,4 @@
-// ============================================
 // AuraStream — History Component
-// ============================================
 
 import { createElement, getFilenameFromUrl } from '../utils/helpers.js';
 import { getHistory, clearHistory } from '../utils/storage.js';
