@@ -1,6 +1,4 @@
-// ============================================
 // AuraStream — Player Controls Component
-// ============================================
 
 import { createElement, formatTime } from '../utils/helpers.js';
 import { PLAYBACK_SPEEDS, CONTROLS_HIDE_DELAY, SEEK_STEP, VOLUME_STEP, SHORTCUTS } from '../utils/constants.js';
@@ -245,7 +243,7 @@ export class Controls {
 
   togglePlay() {
     if (this._video.paused || this._video.ended) {
-      this._video.play().catch(() => {});
+      this._video.play().catch(() => { });
     } else {
       this._video.pause();
     }
@@ -258,9 +256,9 @@ export class Controls {
 
   toggleFullscreen() {
     if (!document.fullscreenElement) {
-      this._playerWrapper.requestFullscreen().catch(() => {});
+      this._playerWrapper.requestFullscreen().catch(() => { });
     } else {
-      document.exitFullscreen().catch(() => {});
+      document.exitFullscreen().catch(() => { });
     }
   }
 
