@@ -1,6 +1,4 @@
-// ============================================
 // AuraStream — Landing Page Component
-// ============================================
 
 import { createElement } from '../utils/helpers.js';
 import { validateUrl } from '../core/URLValidator.js';
