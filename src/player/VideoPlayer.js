@@ -1,6 +1,4 @@
-// ============================================
 // AuraStream — Video Player Component
-// ============================================
 
 import { createElement } from '../utils/helpers.js';
 import { StreamingEngine } from '../core/StreamingEngine.js';
