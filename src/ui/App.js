@@ -1,6 +1,4 @@
-// ============================================
 // AuraStream — Main App Shell
-// ============================================
 
 import { createElement } from '../utils/helpers.js';
 import { Header } from './Header.js';
