@@ -1,7 +1,3 @@
-// ============================================
-// AuraStream — Main Entry Point
-// ============================================
-
 // Styles
 import './styles/index.css';
 import './styles/animations.css';
