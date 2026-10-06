@@ -1,4 +1,3 @@
-// Styles
 import './styles/index.css';
 import './styles/animations.css';
 import './styles/player.css';
